@@ -1,3 +1,5 @@
+# DockerFile分为四部分组成：基础镜像信、维护者信息、镜像操作指令和容器启动时执行的指令。
+
 # 依赖的官方jdk8版本，即基于哪个镜像
 FROM frolvlad/alpine-oraclejdk8:slim
 # 将本地文件夹挂载到当前容器
