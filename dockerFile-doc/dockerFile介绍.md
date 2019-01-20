@@ -2,10 +2,10 @@
  - Dockerfile 是自动构建 Docker 镜像的配置文件，用户可以使用 Dockerfile 快速创建自定义的镜像。Dockerfile 中的命令非常类似于 Linux 下的 Shell 命令。
  - 一般来说，我们可以将 Dockerfile 分为四个部分：
  ```
-     基础镜像(父镜像)信息指令 FROM。
-     维护者信息指令 MAINTAINER。
-     镜像操作指令 RUN 、EVN 、ADD 和 WORKDIR 等。
-     容器启动指令 CMD 、ENTRYPOINT 和 USER 等。
+     基础镜像(父镜像)信息指令： FROM。
+     维护者信息指令： MAINTAINER。
+     镜像操作指令： RUN 、EVN 、ADD 和 WORKDIR 等。
+     容器启动指令： CMD 、ENTRYPOINT 和 USER 等。
  ```
  - 下面是一段简单的 Dockerfile 的例子：
  ```
