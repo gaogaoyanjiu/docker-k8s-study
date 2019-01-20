@@ -1,42 +1,45 @@
 # Dockerfile 入门
 
-##  Dockerfile 是什么？
+ - ## Dockerfile 是什么？
  - Dockerfile 是自动构建 Docker 镜像的配置文件，用户可以使用 Dockerfile 快速创建自定义的镜像。Dockerfile 中的命令非常类似于 Linux 下的 Shell 命令。
- 首先通过一张图来了解 Docker 镜像、容器和 Dockerfile 三者之间的关系。
-   ![ Docker 镜像、容器和 Dockerfile 三者之间的关系](img/p1.png)
- 通过上图可以看出使用 Dockerfile 定义镜像，运行镜像启动容器。  
  
- ## Dockerfile 概念
- Docker 镜像是一个特殊的文件系统，除了提供容器运行时所需的程序、库、资源、配置等文件外，还包含了一些为运行时准备的一些配置参数（如匿名卷、环境变量、用户等）。镜像不包含任何动态数据，其内容在构建之后也不会被改变。
+ - 首先通过一张图来了解 Docker 镜像、容器和 Dockerfile 三者之间的关系。
+  ![ Docker 镜像、容器和 Dockerfile 三者之间的关系](img/p1.png)
  
- 镜像的定制实际上就是定制每一层所添加的配置、文件。如果我们可以把每一层修改、安装、构建、操作的命令都写入一个脚本，用这个脚本来构建、定制镜像，那么之前提及的无法重复的问题、镜像构建透明性的问题、体积的问题就都会解决。这个脚本就是 Dockerfile。
+   通过上图可以看出使用 Dockerfile 定义镜像，运行镜像启动容器。  
  
- Dockerfile 是一个文本文件，其内包含了一条条的指令(Instruction)，每一条指令构建一层，因此每一条指令的内容，就是描述该层应当如何构建。有了 Dockerfile，当我们需要定制自己额外的需求时，只需在 Dockerfile 上添加或者修改指令，重新生成 image 即可，省去了敲命令的麻烦。 
+ - ## Dockerfile 概念
+   Docker 镜像是一个特殊的文件系统，除了提供容器运行时所需的程序、库、资源、配置等文件外，还包含了一些为运行时准备的一些配置参数（如匿名卷、环境变量、用户等）。镜像不包含任何动态数据，其内容在构建之后也不会被改变。
  
- ## Dockerfile 文件格式
- ```
- ##  Dockerfile文件格式
+   镜像的定制实际上就是定制每一层所添加的配置、文件。如果我们可以把每一层修改、安装、构建、操作的命令都写入一个脚本，用这个脚本来构建、定制镜像，那么之前提及的无法重复的问题、镜像构建透明性的问题、体积的问题就都会解决。这个脚本就是 Dockerfile。
  
- # This dockerfile uses the ubuntu image
- # VERSION 2 - EDITION 1
- # Author: docker_user
- # Command format: Instruction [arguments / command] ..
+   Dockerfile 是一个文本文件，其内包含了一条条的指令(Instruction)，每一条指令构建一层，因此每一条指令的内容，就是描述该层应当如何构建。有了 Dockerfile，当我们需要定制自己额外的需求时，只需在 Dockerfile 上添加或者修改指令，重新生成 image 即可，省去了敲命令的麻烦。 
+ 
+ - ## Dockerfile 文件格式
+  ```
+    ##  Dockerfile文件格式
+ 
+    # This dockerfile uses the ubuntu image
+    # VERSION 2 - EDITION 1
+    # Author: docker_user
+    # Command format: Instruction [arguments / command] ..
   
- # 1、第一行必须指定 基础镜像信息
- FROM ubuntu
+    # 1、第一行必须指定 基础镜像信息
+    FROM ubuntu
   
- # 2、维护者信息
- MAINTAINER docker_user docker_user@email.com
+    # 2、维护者信息
+    MAINTAINER docker_user docker_user@email.com
   
- # 3、镜像操作指令
- RUN echo "deb http://archive.ubuntu.com/ubuntu/ raring main universe" >> /etc/apt/sources.list
- RUN apt-get update && apt-get install -y nginx
- RUN echo "\ndaemon off;" >> /etc/nginx/nginx.conf
+    # 3、镜像操作指令
+    RUN echo "deb http://archive.ubuntu.com/ubuntu/ raring main universe" >> /etc/apt/sources.list
+    RUN apt-get update && apt-get install -y nginx
+    RUN echo "\ndaemon off;" >> /etc/nginx/nginx.conf
   
- # 4、容器启动执行指令
- CMD /usr/sbin/nginx
- ```
- Dockerfile 分为四部分：基础镜像信息、维护者信息、镜像操作指令、容器启动执行指令。一开始必须要指明所基于的镜像名称，接下来一般会说明维护者信息；后面则是镜像操作指令，例如 RUN 指令。每执行一条RUN 指令，镜像添加新的一层，并提交；最后是 CMD 指令，来指明运行容器时的操作命令。
+    # 4、容器启动执行指令
+    CMD /usr/sbin/nginx
+  ```
+  Dockerfile 分为四部分：基础镜像信息、维护者信息、镜像操作指令、容器启动执行指令。一开始必须要指明所基于的镜像名称，接下来一般会说明维护者信息；后面则是镜像操作指令，例如 RUN 指令。每执行一条RUN 指令，镜像添加新的一层，并提交；最后是 CMD 指令，来指明运行容器时的操作命令。
+ 
  - 一般来说，我们可以将 Dockerfile 分为四个部分：
   ```
       基础镜像(父镜像)信息指令： FROM。
@@ -44,15 +47,16 @@
       镜像操作指令： RUN 、EVN 、ADD 和 WORKDIR 等。
       容器启动指令： CMD 、ENTRYPOINT 和 USER 等。
   ```
- ## 构建镜像
-  docker build 命令会根据 Dockerfile 文件及上下文构建新 Docker 镜像。构建上下文是指 Dockerfile 所在的本地路径或一个URL（Git仓库地址）。构建上下文环境会被递归处理，所以构建所指定的路径还包括了子目录，而URL还包括了其中指定的子模块。
+ - ## 构建镜像
+   docker build 命令会根据 Dockerfile 文件及上下文构建新 Docker 镜像。构建上下文是指 Dockerfile 所在的本地路径或一个URL（Git仓库地址）。构建上下文环境会被递归处理，所以构建所指定的路径还包括了子目录，而URL还包括了其中指定的子模块。
   
-  将当前目录做为构建上下文时，可以像下面这样使用docker build命令构建镜像：
+   将当前目录做为构建上下文时，可以像下面这样使用docker build命令构建镜像：
   ```
   docker build .
   Sending build context to Docker daemon  6.51 MB
   ...
   ```
+   
   说明：构建会在 Docker 后台守护进程（daemon）中执行，而不是CLI中。构建前，构建进程会将全部内容（递归）发送到守护进程。大多情况下，应该将一个空目录作为构建上下文环境，并将 Dockerfile 文件放在该目录下。
   
   在构建上下文中使用的 Dockerfile 文件，是一个构建指令文件。为了提高构建性能，可以通过.dockerignore文件排除上下文目录下不需要的文件和目录。
@@ -64,7 +68,7 @@
   docker build -f /path/to/a/Dockerfile .
   ```
   构建时，还可以通过-t参数指定构建成镜像的仓库、标签。
-  ## 镜像标签
+  - ## 镜像标签
   ```  
   docker build -t nginx/v3 .
   ```
@@ -78,8 +82,8 @@
   Sending build context to Docker daemon 2.048 kB
   Error response from daemon: Unknown instruction: RUNCMD
   ```
-  ## 缓存
-  Docker 守护进程会一条一条的执行 Dockerfile 中的指令，而且会在每一步提交并生成一个新镜像，最后会输出最终镜像的ID。生成完成后，Docker 守护进程会自动清理你发送的上下文。 Dockerfile文件中的每条指令会被独立执行，并会创建一个新镜像，RUN cd /tmp等命令不会对下条指令产生影响。 Docker 会重用已生成的中间镜像，以加速docker build的构建速度。以下是一个使用了缓存镜像的执行过程：
+  - ## 缓存
+    Docker 守护进程会一条一条的执行 Dockerfile 中的指令，而且会在每一步提交并生成一个新镜像，最后会输出最终镜像的ID。生成完成后，Docker 守护进程会自动清理你发送的上下文。 Dockerfile文件中的每条指令会被独立执行，并会创建一个新镜像，RUN cd /tmp等命令不会对下条指令产生影响。 Docker 会重用已生成的中间镜像，以加速docker build的构建速度。以下是一个使用了缓存镜像的执行过程：
   ```
   $ docker build -t svendowideit/ambassador .
   Sending build context to Docker daemon 15.36 kB
@@ -97,8 +101,9 @@
   Successfully built 7ea8aef582cc
   ```
   构建缓存仅会使用本地父生成链上的镜像，如果不想使用本地缓存的镜像，也可以通过--cache-from指定缓存。指定后将不再使用本地生成的镜像链，而是从镜像仓库中下载。
-  ## 寻找缓存的逻辑
-  Docker 寻找缓存的逻辑其实就是树型结构根据 Dockerfile 指令遍历子节点的过程。下图可以说明这个逻辑。
+  
+  - ## 寻找缓存的逻辑
+    Docker 寻找缓存的逻辑其实就是树型结构根据 Dockerfile 指令遍历子节点的过程。下图可以说明这个逻辑。
   ```
    FROM base_image:version           Dockerfile:
              +----------+                FROM base_image:version
@@ -123,8 +128,8 @@
   除了这两个命令，Docker 并不会去检查容器内的文件内容，比如 RUN apt-get -y update，每次执行时文件可能都不一样，但是 Docker 认为命令一致，会继续使用缓存。这样一来，以后构建时都不会再重新运行apt-get -y update。
   
   如果 Docker 没有找到当前指令的缓存，则会构建一个新的镜像，并且之后的所有指令都不会再去寻找缓存。
-  ## 简单示例
-  接下来用一个简单的示例来感受一下 Dockerfile 是如何用来构建镜像启动容器。我们以定制 nginx 镜像为例，在一个空白目录中，建立一个文本文件，并命名为 Dockerfile：
+  - ## 简单示例
+    接下来用一个简单的示例来感受一下 Dockerfile 是如何用来构建镜像启动容器。我们以定制 nginx 镜像为例，在一个空白目录中，建立一个文本文件，并命名为 Dockerfile：
   ```
   mkdir mynginx
   cd mynginx
@@ -158,8 +163,8 @@
    ![ Docker 镜像、容器和 Dockerfile 三者之间的关系](img/p2.png)
   这样一个简单使用 Dockerfile 构建镜像，运行容器的示例就完成了！
   
-  ## 修改容器内容
-  容器启动后，需要对容器内的文件进行进一步的完善，可以使用docker exec -it xx bash命令再次进行修改，以上面的示例为基础，修改 nginx 启动页面内容：
+  - ## 修改容器内容
+    容器启动后，需要对容器内的文件进行进一步的完善，可以使用docker exec -it xx bash命令再次进行修改，以上面的示例为基础，修改 nginx 启动页面内容：
   ```
     docker exec -it docker_nginx_v1   bash
     root@3729b97e8226:/# echo '<h1>Hello, Docker neo!</h1>' > /usr/share/nginx/html/index.html
