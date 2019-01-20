@@ -161,6 +161,7 @@
   ```
   这条命令会用 nginx 镜像启动一个容器，命名为docker_nginx_v1，并且映射了 80 端口，这样我们可以用浏览器去访问这个 nginx 服务器：http://192.168.0.54/，页面返回信息：
    ![ Docker 镜像、容器和 Dockerfile 三者之间的关系](img/p2.png)
+   
   这样一个简单使用 Dockerfile 构建镜像，运行容器的示例就完成了！
   
   - ## 修改容器内容
@@ -175,6 +176,7 @@
   
   再次刷新浏览器，会发现内容被改变。
      ![ Docker 镜像、容器和 Dockerfile 三者之间的关系](img/p3.png)
+     
   修改了容器的文件，也就是改动了容器的存储层，可以通过 docker diff 命令看到具体的改动。
   ```
   docker diff docker_nginx_v1 
