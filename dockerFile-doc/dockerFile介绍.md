@@ -4,6 +4,7 @@
  - Dockerfile 是自动构建 Docker 镜像的配置文件，用户可以使用 Dockerfile 快速创建自定义的镜像。Dockerfile 中的命令非常类似于 Linux 下的 Shell 命令。
  
  - 首先通过一张图来了解 Docker 镜像、容器和 Dockerfile 三者之间的关系。
+  
   ![ Docker 镜像、容器和 Dockerfile 三者之间的关系](img/p1.png)
  
    通过上图可以看出使用 Dockerfile 定义镜像，运行镜像启动容器。  
@@ -160,7 +161,8 @@
   docker run  --name docker_nginx_v1   -d -p 80:80 nginx:v1
   ```
   这条命令会用 nginx 镜像启动一个容器，命名为docker_nginx_v1，并且映射了 80 端口，这样我们可以用浏览器去访问这个 nginx 服务器：http://192.168.0.54/，页面返回信息：
-   ![ Docker 镜像、容器和 Dockerfile 三者之间的关系](img/p2.png)
+  
+  ![ Docker 镜像、容器和 Dockerfile 三者之间的关系](img/p2.png)
    
   这样一个简单使用 Dockerfile 构建镜像，运行容器的示例就完成了！
   
@@ -175,7 +177,8 @@
   以交互式终端方式进入 docker_nginx_v1 容器，并执行了 bash 命令，也就是获得一个可操作的 Shell。然后，我们用<h1>Hello, Docker neo!</h1>覆盖了 /usr/share/nginx/html/index.html 的内容。
   
   再次刷新浏览器，会发现内容被改变。
-     ![ Docker 镜像、容器和 Dockerfile 三者之间的关系](img/p3.png)
+  
+  ![ Docker 镜像、容器和 Dockerfile 三者之间的关系](img/p3.png)
      
   修改了容器的文件，也就是改动了容器的存储层，可以通过 docker diff 命令看到具体的改动。
   ```
