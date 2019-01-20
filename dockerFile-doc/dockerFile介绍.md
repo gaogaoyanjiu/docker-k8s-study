@@ -28,3 +28,4 @@
  ```
  这个例子是启动一个 Python Flask App 的 Dockerfile ( Flask 是 Python 的一个轻量的 Web 框架)，相信大家从这个例子中能够稍微理解了 Dockfile 的组成以及指令的编写过程。
   
+   ![image](https://github.com/gaogaoyanjiu/docker-k8s-study/tree/master/dockerFile-doc/img/p.png)
